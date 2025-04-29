@@ -2,6 +2,7 @@ import os
 import requests
 from urllib.parse import urlsplit, unquote
 import argparse
+from dotenv import load_dotenv
 
 def get_file_extensionget_file_extension(image_url):
     parsed_url = urlsplit(image_url)
@@ -10,8 +11,8 @@ def get_file_extensionget_file_extension(image_url):
     slash, extension = os.path.splitext(filename)
     return extension
 
-def download_apod(NASA_API, count=30):
-    url = f'https://api.nasa.gov/planetary/apod?api_key={NASA_API}&count={count}'
+def download_apod(nasa_api, count=30):
+    url = f'https://api.nasa.gov/planetary/apod?api_key={nasa_api}&count={count}'
     response = requests.get(url)
     response.raise_for_status()
     images = response.json()
@@ -32,11 +33,12 @@ def download_apod(NASA_API, count=30):
             file.write(img_response.content)
 
 if __name__ == '__main__':
-    NASA_API = 'ZeW9HmRtoJXsNJkQA2vXeQHmmSRJjm1gXobuNanS'
+    load_dotenv()
+    nasa_api = os.getenv('NASA_API')
     parser = argparse.ArgumentParser(description='Download images from NASA APOD.')
     parser.add_argument('--count', type=int, default=30, help='Number of images to download (default: 30).')
 
     args = parser.parse_args()
     
-    download_apod(NASA_API, count=args.count)
+    download_apod(nasa_api, count=args.count)
     
