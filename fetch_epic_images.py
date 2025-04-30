@@ -3,11 +3,10 @@ import requests
 from datetime import datetime, timedelta
 import argparse
 from dotenv import load_dotenv
-from creating_a_folder import creating_a_folder
 
 def download_epic(nasa_api, num_photos=5):
     folder = 'image_epic'
-    creating_a_folder(folder)
+    os.makedirs(folder, exist_ok=True)
     end_date = datetime.now()
     start_date = end_date - timedelta(days = num_photos)
     current_date = start_date

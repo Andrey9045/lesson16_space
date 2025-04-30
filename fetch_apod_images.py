@@ -3,7 +3,6 @@ import requests
 from urllib.parse import urlsplit, unquote
 import argparse
 from dotenv import load_dotenv
-from creating_a_folder import creating_a_folder
 
 def get_file_extensionget_file_extension(image_url):
     parsed_url = urlsplit(image_url)
@@ -18,7 +17,7 @@ def download_apod(nasa_api, count=30):
     response.raise_for_status()
     images = response.json()
     folder = 'image_apod'
-    creating_a_folder(folder)
+    os.makedirs(folder, exist_ok=True)
     for index, image in enumerate(images, start=1):
         image_url = image['url']
         if not image_url.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
