@@ -11,17 +11,18 @@ def download_epic(nasa_api, num_photos=5):
     end_date = datetime.now()
     start_date = end_date - timedelta(days = num_photos)
     current_date = start_date
+    params = {'api_key':nasa_api}
     while  current_date <= end_date:
         date_str = current_date.strftime('%Y-%m-%d')
-        url = f'https://api.nasa.gov/EPIC/api/natural/date/{date_str}?api_key={nasa_api}'
-        response = requests.get(url)
+        url = f'https://api.nasa.gov/EPIC/api/natural/date/{date_str}'
+        response = requests.get(url, params=params)
         response.raise_for_status()
         epic_info = response.json()
         if epic_info:
             for photo in epic_info[:num_photos]:
                 image_name = photo['image']
-                image_url = f"https://api.nasa.gov/EPIC/archive/natural/{current_date.year}/{current_date.month:02d}/{current_date.day:02d}/png/{image_name}.png?api_key={nasa_api}"
-                image_response = requests.get(image_url)
+                image_url = f"https://api.nasa.gov/EPIC/archive/natural/{current_date.year}/{current_date.month:02d}/{current_date.day:02d}/png/{image_name}.png"
+                image_response = requests.get(image_url, params=params)
                 image_response.raise_for_status()
                 file_path = os.path.join(folder, f"{image_name}.png")
                 with open(file_path, 'wb') as file:
