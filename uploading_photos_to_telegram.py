@@ -30,8 +30,8 @@ def publish_images(directory, delay):
 
 if __name__ == '__main__':
     load_dotenv()
-    bot_token = os.getenv('BOT_TOKEN')
-    channel_id = os.getenv('CHANNEL_ID')
+    bot_token = os.getenv('TG_BOT_TOKEN')
+    channel_id = os.getenv('TG_CHANNEL_ID')
     parser = argparse.ArgumentParser(description='Публикация изображений в Telegram-канал.')
     parser.add_argument('directory', type=str, help='Директория с изображениями для публикации')
     parser.add_argument('--delay', type=int, default=14400, help='Задержка между публикациями в секундах (по умолчанию 4 часа)')
