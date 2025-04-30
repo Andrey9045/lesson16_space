@@ -17,16 +17,17 @@ def download_epic(nasa_api, num_photos=5):
         response = requests.get(url, params=params)
         response.raise_for_status()
         epic_info = response.json()
-        if epic_info:
-            for photo in epic_info[:num_photos]:
-                image_name = photo['image']
-                image_url = f"https://api.nasa.gov/EPIC/archive/natural/{current_date.year}/{current_date.month:02d}/{current_date.day:02d}/png/{image_name}.png"
-                image_response = requests.get(image_url, params=params)
-                image_response.raise_for_status()
-                file_path = os.path.join(folder, f"{image_name}.png")
-                with open(file_path, 'wb') as file:
-                    file.write(image_response.content)
-        current_date += timedelta(days=1)
+        if not epic_info:
+            return
+        for photo in epic_info[:num_photos]:
+            image_name = photo['image']
+            image_url = f"https://api.nasa.gov/EPIC/archive/natural/{current_date.year}/{current_date.month:02d}/{current_date.day:02d}/png/{image_name}.png"
+            image_response = requests.get(image_url, params=params)
+            image_response.raise_for_status()
+            file_path = os.path.join(folder, f"{image_name}.png")
+            with open(file_path, 'wb') as file:
+                file.write(image_response.content)
+            
 
 if __name__ == '__main__':
     load_dotenv()
