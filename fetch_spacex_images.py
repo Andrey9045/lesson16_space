@@ -1,6 +1,7 @@
 import os
 import requests
 import argparse
+from creating_a_folder import creating_a_folder
 
 def fetch_spacex_images(launch_url, folder):
     response = requests.get(launch_url)
@@ -10,8 +11,7 @@ def fetch_spacex_images(launch_url, folder):
     if 'links' in launch_data and 'flickr' in launch_data['links']:
         image_links.extend(launch_data['links']['flickr']['original'])
     
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+    creating_a_folder(folder)
     
     for index, image_link in enumerate(image_links, start=1):
         filename = f"spacex{index}.jpeg"
