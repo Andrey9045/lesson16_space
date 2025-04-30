@@ -4,7 +4,7 @@ from urllib.parse import urlsplit, unquote
 import argparse
 from dotenv import load_dotenv
 
-def get_file_extensionget_file_extension(image_url):
+def get_an_extension(image_url):
     parsed_url = urlsplit(image_url)
     path = unquote(parsed_url.path)
     filename = os.path.split(path)[-1]
@@ -23,7 +23,7 @@ def download_apod(nasa_api, count=30):
         if not image_url.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
             print(f"Пропускаем URL (не изображение): {image_url}")
             continue
-        extension = get_file_extensionget_file_extension(image_url)
+        extension = get_an_extension(image_url)
         filename = f"apod{index}{extension}"
         file_path = os.path.join(folder, filename)
         img_response = requests.get(image_url,timeout=30)
