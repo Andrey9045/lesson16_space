@@ -5,7 +5,10 @@ import argparse
 
 def fetch_spacex_images(launch_url, folder):
     response = requests.get(launch_url)
+    response.raise_for_status()
     launch_data = response.json()
+    if 'error' in launch_data:
+        raise requests.exceptions.HTTPError(decoded_response['error'])
     
     image_links = []
     if 'links' in launch_data and 'flickr' in launch_data['links']:
