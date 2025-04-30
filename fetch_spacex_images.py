@@ -2,6 +2,7 @@ import os
 import requests
 import argparse
 
+
 def fetch_spacex_images(launch_url, folder):
     response = requests.get(launch_url)
     launch_data = response.json()
@@ -22,9 +23,18 @@ def fetch_spacex_images(launch_url, folder):
     
     print(f"Downloaded {len(image_links)} images to '{folder}'.")
 
-def main(launch_id=None):
+def main():
+    parser = argparse.ArgumentParser(description="Download SpaceX launch images.")
+    parser.add_argument(
+        '--launch_id', 
+        type=str, 
+        help='The ID of the SpaceX launch to download images from. If not provided, the latest launch images will be downloaded.'
+    )
+    
+    args = parser.parse_args()
     spacex_url = "https://api.spacexdata.com/v4/launches"
     folder = "spacex_images"
+    launch_id = args.launch_id
 
     if launch_id:
         launch_url = f"{spacex_url}/{launch_id}"
@@ -36,12 +46,4 @@ def main(launch_id=None):
     fetch_spacex_images(launch_url, folder)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Download SpaceX launch images.")
-    parser.add_argument(
-        '--launch_id', 
-        type=str, 
-        help='The ID of the SpaceX launch to download images from. If not provided, the latest launch images will be downloaded.'
-    )
-    
-    args = parser.parse_args()
-    main(args.launch_id)
+    main()
