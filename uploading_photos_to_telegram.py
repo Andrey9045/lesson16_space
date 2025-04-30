@@ -9,9 +9,11 @@ def send_image(bot, image_path):
     with open(image_path, 'rb') as image_file:
         bot.send_photo(chat_id=channel_id, photo=image_file)
 
-def publish_images(directory, delay):
+def publish_images(path, delay):
     bot = Bot(token=bot_token)
-    all_files = os.listdir(directory)
+    if os.path.isfile(path)
+        send_image(bot,path)
+    all_files = os.listdir(path)
     images = []
     for picture in all_files:
         if picture.endswith(('.jpg', '.jpeg', '.png')):
@@ -24,7 +26,7 @@ def publish_images(directory, delay):
     while True:
         random.shuffle(images)  
         for image in images:
-            image_path = os.path.join(directory, image)
+            image_path = os.path.join(path, image)
             send_image(bot, image_path)
             time.sleep(delay)
 
@@ -33,9 +35,9 @@ if __name__ == '__main__':
     bot_token = os.getenv('TG_BOT_TOKEN')
     channel_id = os.getenv('TG_CHANNEL_ID')
     parser = argparse.ArgumentParser(description='Публикация изображений в Telegram-канал.')
-    parser.add_argument('directory', type=str, help='Директория с изображениями для публикации')
+    parser.add_argument('path', type=str, help='Директория с изображениями для публикации')
     parser.add_argument('--delay', type=int, default=14400, help='Задержка между публикациями в секундах (по умолчанию 4 часа)')
     
     args = parser.parse_args()
     
-    publish_images(args.directory, args.delay)
+    publish_images(args.path, args.delay)
