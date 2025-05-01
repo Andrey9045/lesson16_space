@@ -7,17 +7,17 @@ from download_image import download_image
 def fetch_spacex_images(launch_url, folder):
     response = requests.get(launch_url)
     response.raise_for_status()
-    launch_data = response.json()
-    if 'error' in launch_data:
+    images = response.json()
+    if 'error' in images:
         raise requests.exceptions.HTTPError(decoded_response['error'])
     
     image_links = []
-    if 'links' in launch_data and 'flickr' in launch_data['links']:
-        image_links.extend(launch_data['links']['flickr']['original'])
+    if 'links' in images and 'flickr' in images['links']:
+        image_links.extend(images['links']['flickr']['original'])
     
     os.makedirs(folder, exist_ok=True)
     
-    for index, image_link in enumerate(image_links, start=1):
+    for index, image_url in enumerate(image_links, start=1):
         filename = f"spacex{index}.jpeg"
         file_path = os.path.join(folder, filename)
         download_image(image_url, file_path, timeout=30)
