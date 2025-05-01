@@ -3,6 +3,7 @@ import requests
 from urllib.parse import urlsplit, unquote
 import argparse
 from dotenv import load_dotenv
+from download_image import download_image
 
 def get_an_extension(image_url):
     parsed_url = urlsplit(image_url)
@@ -26,10 +27,7 @@ def download_apod(nasa_api, count=30):
         extension = get_an_extension(image_url)
         filename = f"apod{index}{extension}"
         file_path = os.path.join(folder, filename)
-        img_response = requests.get(image_url,timeout=30)
-        img_response.raise_for_status()
-        with open(file_path, 'wb') as file:
-            file.write(img_response.content)
+        download_image(image_url, file_path, timeout=30)
 
 if __name__ == '__main__':
     load_dotenv()

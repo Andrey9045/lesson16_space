@@ -3,6 +3,7 @@ import requests
 from datetime import datetime, timedelta
 import argparse
 from dotenv import load_dotenv
+from download_image import download_image
 
 def download_epic(nasa_api, num_photos=5):
     folder = 'image_epic'
@@ -22,11 +23,8 @@ def download_epic(nasa_api, num_photos=5):
         for photo in epic_info[:num_photos]:
             image_name = photo['image']
             image_url = f"https://api.nasa.gov/EPIC/archive/natural/{current_date.year}/{current_date.month:02d}/{current_date.day:02d}/png/{image_name}.png"
-            image_response = requests.get(image_url, params=params)
-            image_response.raise_for_status()
             file_path = os.path.join(folder, f"{image_name}.png")
-            with open(file_path, 'wb') as file:
-                file.write(image_response.content)
+            download_image(image_url, file_path, timeout=30)
             
 
 if __name__ == '__main__':

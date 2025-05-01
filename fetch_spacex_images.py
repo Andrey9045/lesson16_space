@@ -1,6 +1,7 @@
 import os
 import requests
 import argparse
+from download_image import download_image
 
 
 def fetch_spacex_images(launch_url, folder):
@@ -19,10 +20,7 @@ def fetch_spacex_images(launch_url, folder):
     for index, image_link in enumerate(image_links, start=1):
         filename = f"spacex{index}.jpeg"
         file_path = os.path.join(folder, filename)
-        img_response = requests.get(image_link)
-        img_response.raise_for_status()
-        with open(file_path, 'wb') as file:
-            file.write(img_response.content)
+        download_image(image_url, file_path, timeout=30)
     
     print(f"Downloaded {len(image_links)} images to '{folder}'.")
 
