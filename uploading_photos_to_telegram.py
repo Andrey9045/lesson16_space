@@ -5,14 +5,14 @@ import argparse
 from telegram import Bot
 from dotenv import load_dotenv
 
-def send_image(bot, path):
+def send_image(bot, path, channel_id):
     with open(path, 'rb') as image_file:
         bot.send_photo(chat_id=channel_id, photo=image_file)
 
-def publish_images(path, delay):
+def publish_images(path, delay, bot_token, channel_id):
     bot = Bot(token=bot_token)
     if os.path.isfile(path):
-        send_image(bot,path)
+        send_image(bot, path, channel_id)
         return
     all_files = os.listdir(path)
     images = []
@@ -28,7 +28,7 @@ def publish_images(path, delay):
         random.shuffle(images)  
         for image in images:
             path = os.path.join(path, image)
-            send_image(bot, path)
+            send_image(bot, path, channel_id)
             time.sleep(delay)
 
 if __name__ == '__main__':
@@ -41,5 +41,5 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
-    publish_images(args.path, args.delay)
+    publish_images(args.path, args.delay, bot_token, channel_id)
 
