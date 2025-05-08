@@ -12,8 +12,8 @@ def get_an_extension(image_url):
     slash, extension = os.path.splitext(filename)
     return extension
 
-def download_apod(nasa_api, count=30):
-    url = f'https://api.nasa.gov/planetary/apod?api_key={nasa_api}&count={count}'
+def download_apod(nasa_key, count=30):
+    url = f'https://api.nasa.gov/planetary/apod?api_key={nasa_key}&count={count}'
     response = requests.get(url)
     response.raise_for_status()
     images = response.json()
@@ -31,11 +31,11 @@ def download_apod(nasa_api, count=30):
 
 if __name__ == '__main__':
     load_dotenv()
-    nasa_api = os.getenv('NASA_API')
+    nasa_key = os.getenv('NASA_KEY')
     parser = argparse.ArgumentParser(description='Download images from NASA APOD.')
     parser.add_argument('--count', type=int, default=30, help='Number of images to download (default: 30).')
 
     args = parser.parse_args()
     
-    download_apod(nasa_api, count=args.count)
+    download_apod(nasa_key, count=args.count)
     

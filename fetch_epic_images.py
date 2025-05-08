@@ -5,13 +5,13 @@ import argparse
 from dotenv import load_dotenv
 from download_image import download_image
 
-def download_epic(nasa_api, num_photos=5):
+def download_epic(nasa_key, num_photos=5):
     folder = 'image_epic'
     os.makedirs(folder, exist_ok=True)
     end_date = datetime.now()
     start_date = end_date - timedelta(days = num_photos)
     current_date = start_date
-    params = {'api_key':nasa_api}
+    params = {'api_key':nasa_key}
     while  current_date <= end_date:
         date_str = current_date.strftime('%Y-%m-%d')
         url = f'https://api.nasa.gov/EPIC/api/natural/date/{date_str}'
@@ -29,8 +29,8 @@ def download_epic(nasa_api, num_photos=5):
 
 if __name__ == '__main__':
     load_dotenv()
-    nasa_api = os.getenv('NASA_API')
+    nasa_key = os.getenv('NASA_KEY')
     parser = argparse.ArgumentParser(description='Скачает EPIC фото')
     parser.add_argument('--num_photos', type=int, default=5, help='Введите кол-во фото. Дефолтное значение 5')
     args = parser.parse_args()
-    download_epic(nasa_api, num_photos=args.num_photos)
+    download_epic(nasa_key, num_photos=args.num_photos)
