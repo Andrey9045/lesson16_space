@@ -13,9 +13,13 @@ def get_an_extension(image_url):
     return extension
 
 def download_apod(nasa_key, count=30):
-    url = f'https://api.nasa.gov/planetary/apod?api_key={nasa_key}&count={count}'
-    response = requests.get(url)
-    response.raise_for_status()
+    params = {
+        'api_key': nasa_key,
+        'count': count
+    }
+    url = f'https://api.nasa.gov/planetary/apod'
+    response = requests.get(url, params=params)
+    response.raise_for_status() 
     images = response.json()
     folder = 'image_apod'
     os.makedirs(folder, exist_ok=True)
