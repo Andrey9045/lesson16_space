@@ -28,7 +28,8 @@ def main():
     parser = argparse.ArgumentParser(description="Download SpaceX launch images.")
     parser.add_argument(
         '--launch_id', 
-        type=str, 
+        type=str,
+        default=None, 
         help='The ID of the SpaceX launch to download images from. If not provided, the latest launch images will be downloaded.'
     )
     
@@ -41,6 +42,7 @@ def main():
         launch_url = f"{spacex_url}/{launch_id}"
     else:
         last_launch_response = requests.get(f"{spacex_url}/latest")
+        last_launch_response.raise_for_status()
         last_launch = last_launch_response.json()
         launch_url = f"{spacex_url}/{last_launch['id']}"
 
